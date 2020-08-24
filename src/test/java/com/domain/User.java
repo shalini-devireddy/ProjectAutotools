@@ -4,6 +4,7 @@ public class User {
 
     private String userName;
     private String password;
+    private String welcomeMsg;
 
     public String getUserName() {
         return userName;
@@ -23,4 +24,5 @@ public class User {
     {
         this.password = password;
     }
+
 }
