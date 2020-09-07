@@ -1,5 +1,6 @@
 package com.stepdefs;
 
+import com.domain.User;
 import com.exceptions.UserNotFound;
 import com.pages.*;
 import com.utils.UserDataProvider;
@@ -20,9 +21,11 @@ public class StepDefinitions {
     UserFormPage theUserFormPage;
     EmployeeDetailsPage theEmployeeDetails;
     RegionDetailsPage theRegionDetailsPage;
+    BasePage theCurrentPage;
     String theFirstName;
     String theFormError;
     String theFirstNameError;
+    User validUser;
 
     @Given("User is on Login Page")
     public void getLoginPage(){
@@ -69,15 +72,17 @@ public class StepDefinitions {
     @Given("User logged in as {string}")
     public void loginUser(String userName) throws UserNotFound {
         theLoginPage =  new  LoginPage();
-        theLoginPage.loginUser(userName);
+        validUser = userData.getValidUser(userName);
+        theLoginPage.loginUser(validUser.getUserName(), validUser.getPassword());
         // Welcome message get from a properties files (done)
         theWelcomePage = new WelcomePage(theLoginPage);
         Assert.assertEquals(theWelcomePage.getWelcomeMsg(), userData.getWelcomeMsg());
     }
-    @And("User {string} tries to login with old password")
-    public void loginWithOldPwd(String userName) throws UserNotFound {
+    @And("the same user to login with old password")
+    public void loginWithOldPwd() throws UserNotFound {
+
         theLoginPage = new  LoginPage();
-        theLoginPage.loginUser(userName);
+        theLoginPage.loginUser(validUser.getUserName(), validUser.getPassword());
 
     }
     @And("user navigates to user form page from welcome page")
@@ -114,6 +119,7 @@ public class StepDefinitions {
     private void callUserFormDirect(){
         theUserFormPage.callUserFormDirect();
     }
+
     @And("Change the password as {string}")
     public void changePassword(String newPassword) {
         theUserFormPage.enterPwd(newPassword);
@@ -123,6 +129,17 @@ public class StepDefinitions {
         //TODO get success msg from file
         LOG.debug(theUserFormPage.getSuccessMsg());
     }
+
+    @And("Change the password to new password")
+    public void changePassword() {
+        theUserFormPage.enterPwd(validUser.getNewPwd());
+        theUserFormPage.enterVerifyPwd(validUser.getNewPwd());
+        theUserFormPage.clickSave();
+        theUserFormPage.getSuccessMsg();
+        //TODO get success msg from file
+        LOG.debug(theUserFormPage.getSuccessMsg());
+    }
+
     @And("Check error with old password")
     public void errorCheckWithOldPwd()throws UserNotFound{
         // TODO get error message from file.
@@ -130,18 +147,22 @@ public class StepDefinitions {
         LOG.debug(theLoginPage.getErrorMsg());
         theLoginPage.closePage();
     }
-    @And("User {string} logs in with pwd {string}")
-    public void enterNewPwd(String userName, String pwd){
+
+    @And("the same user logs in with new pwd")
+    public void enterNewPwd(){
         theLoginPage = new LoginPage();
-        theLoginPage.enterUsername(userName);
-        theLoginPage.enterPwd(pwd);
+        theLoginPage.enterUsername(validUser.getUserName());
+        theLoginPage.enterPwd(validUser.getNewPwd());
         theLoginPage.clickSignIn();
         theWelcomePage = new WelcomePage(theLoginPage);
+        userData.flipPasswords(validUser.getUserName());
+
         Assert.assertEquals(theWelcomePage.getWelcomeMsg(),userData.getWelcomeMsg());
 
-        userData.updateCredentials(userName,pwd);
         theWelcomePage.closePage();
     }
+
+
     @And("user clears the FirstName field")
     public void clearFirstName(){
         theUserFormPage.clearFirstName();
@@ -150,11 +171,14 @@ public class StepDefinitions {
     public void clickSave(){
         theUserFormPage.clickSave();
     }
-    @Then("an error message should show on top of the table")
-    public void formError(){
-            theFormError=theUserFormPage.getFormError();
-        Assert.assertEquals(theFormError,userData.getFormError());
+
+    @Then("an error message {string} should show on top of the table")
+    public void formError(String errorMsg){
+        theFormError=theUserFormPage.getFormError();
+//        Assert.assertEquals(theFormError,userData.getFormError());
+        Assert.assertEquals(theFormError, errorMsg);
     }
+
     @And("an error message should show next to firstname field")
     public void getFirstNameError(){
         theFirstNameError=theUserFormPage.getFirstNameError();
@@ -167,25 +191,31 @@ public class StepDefinitions {
     @Given("Valid User is on employee details page")
     public void goToEmpDetails() throws UserNotFound{
         theLoginPage= new LoginPage();
-        theLoginPage.goToHomePage();
+        validUser = userData.getValidUser();
+        theLoginPage.loginUser(validUser.getUserName(), validUser.getPassword());
         theWelcomePage= new WelcomePage(theLoginPage);
         Assert.assertEquals(theWelcomePage.getWelcomeMsg(),userData.getWelcomeMsg());
         theEmployeeDetails=new EmployeeDetailsPage(theWelcomePage);
+        theCurrentPage = theEmployeeDetails;
         //theEmployeeDetails.goToEmpDetails();
     }
 
     @And("user observes {int} column is {string}")
     public void inspectSecondColumn(int columnNumber, String expectedColumnName){
-        theEmployeeDetails.inspectSecondColumn(columnNumber,expectedColumnName);
+        theCurrentPage.inspectSecondColumn(columnNumber,expectedColumnName);
        // Assert.assertEquals(tableHeaders.get(columnNumber-1).getText(),expectedColumnName);
-        theEmployeeDetails.closePage();
+        theCurrentPage.closePage();
     }
     //Region details
     @Given("Valid User is on region details page")
     public void goToRegionDetails() throws UserNotFound {
+
         theLoginPage=new LoginPage();
-        theRegionDetailsPage=new RegionDetailsPage(theEmployeeDetails);
-        //goToHomePage();
+        validUser = userData.getValidUser();
+        theLoginPage.loginUser(validUser.getUserName(), validUser.getPassword());
+        theWelcomePage = new WelcomePage(theLoginPage);
+        theRegionDetailsPage = new RegionDetailsPage(theWelcomePage);
+        theCurrentPage = theRegionDetailsPage;
 
     }
 //    //Countries in region

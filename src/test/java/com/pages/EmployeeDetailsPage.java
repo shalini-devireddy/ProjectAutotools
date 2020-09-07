@@ -20,8 +20,7 @@ public class EmployeeDetailsPage extends BasePage{
     private By xpathBy= By.xpath("//a[contains(text(),'All Employees Details')]");
     private By tagNameBy=By.tagName("p");
     private By trTagNameBy=By.tagName("tr");
-    private By tableBy=By.tagName("table");
-    private By thTagNameBy=By.tagName("th");
+
     private String EMPLOYEE_INFO= "Employee Information";
 
     public EmployeeDetailsPage(BasePage theCallingPage){
@@ -45,17 +44,6 @@ public class EmployeeDetailsPage extends BasePage{
                 wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(trTagNameBy));
             }
         }
-    }
-
-    public void inspectSecondColumn(int columnNumber, String expectedColumnName){
-        theWebElement = theWebDriver.findElement(tableBy);
-        List<WebElement> tableHeaders =  theWebElement.findElements(thTagNameBy);
-        for (WebElement aHeader : tableHeaders){
-            LOG.debug(aHeader.getText());
-        }
-        Assert.assertEquals(tableHeaders.get(columnNumber-1).getText(),
-                expectedColumnName);
-        //theWebDriver.close();
     }
 
 }

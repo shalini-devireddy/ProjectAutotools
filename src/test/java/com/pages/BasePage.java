@@ -6,9 +6,11 @@ import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.FluentWait;
+import org.testng.Assert;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Random;
 
 public class BasePage {
@@ -18,7 +20,7 @@ public class BasePage {
     protected String GECKO_DRIVER_LOCATION = "C:\\Users\\Haripemireddy\\QATraining\\Gecko\\geckodriver.exe";
     protected String GECKO_DRIVER_PROPERTY = "webdriver.gecko.driver";
 
-    UserDataProvider userData= new UserDataProvider();
+//    UserDataProvider userData= new UserDataProvider();
     protected WebDriver theWebDriver;
     protected WebElement theWebElement;
     FluentWait<WebDriver> wait;
@@ -30,6 +32,8 @@ public class BasePage {
     protected By buttonBy = By.tagName("button");
     protected By ptagBy = By.tagName("p");
     protected By strongTagBy = By.tagName("strong");
+    private By tableBy=By.tagName("table");
+    private By thTagNameBy=By.tagName("th");
 
     public void closePage(){
         theWebDriver.close();
@@ -45,5 +49,16 @@ public class BasePage {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void inspectSecondColumn(int columnNumber, String expectedColumnName){
+
+        theWebElement = theWebDriver.findElement(tableBy);
+        List<WebElement> tableHeaders =  theWebElement.findElements(thTagNameBy);
+        for (WebElement aHeader : tableHeaders){
+            LOG.debug(aHeader.getText());
+        }
+        Assert.assertEquals(tableHeaders.get(columnNumber-1).getText(),
+                expectedColumnName);
     }
 }

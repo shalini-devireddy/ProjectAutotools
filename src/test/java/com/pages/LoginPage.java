@@ -56,20 +56,20 @@ public class LoginPage extends BasePage{
                 theWebElement.getCssValue(BACKGROUND_IMG).contains(buttonColor));
     }
 
-    public void loginUser(String userName) throws UserNotFound {
+    public void loginUser(String userName, String password) throws UserNotFound {
         enterUsername(userName);
-        LOG.debug(PASSWORD+userData.getPassword(userName));
-        enterPwd(userData.getPassword(userName));
+        enterPwd(password);
         clickSignIn();
     }
-    public void goToHomePage() throws UserNotFound{
 
-        enterUsername(userData.getUserName());
-        LOG.debug("password: "+userData.getPassword(userData.getUserName()));
-        enterPwd(userData.getPassword(userData.getUserName()));
-        clickSignIn();
-
-    }
+//    public void goToHomePage() throws UserNotFound{
+//
+//        enterUsername(userData.getUserName());
+//        LOG.debug("password: "+userData.getPassword(userData.getUserName()));
+//        enterPwd(userData.getPassword(userData.getUserName()));
+//        clickSignIn();
+//
+//    }
     public void checkRememberMe(){
         WebElement rememberMeChkbx = null;
         rememberMeChkbx = theWebDriver.findElement(checkBoxBy);

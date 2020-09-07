@@ -8,15 +8,15 @@ Feature: Test User Form Feature
     When User inspects the first name field value
    Then the first name field value should be "Shalini"
 
-  @wip
+  @completed
   Scenario: Change password of the user
     Given  User logged in as "testuserone@kubecloudsinc.com"
     And user navigates to user form page from welcome page
-    And Change the password as "brandNewPwd1"
+    And Change the password to new password
     And logout
-    And User "testuserone@kubecloudsinc.com" tries to login with old password
+    And the same user to login with old password
     And Check error with old password
-    Then User "testuserone@kubecloudsinc.com" logs in with pwd "brandNewPwd1"
+    Then the same user logs in with new pwd
 
   @completed
   Scenario: First name field is mandatory
@@ -24,5 +24,5 @@ Feature: Test User Form Feature
     And user navigates to user form page from welcome page
      And user clears the FirstName field
      And user clicks save button
-    Then an error message should show on top of the table
+    Then an error message "Form Errors" should show on top of the table
     And an error message should show next to firstname field

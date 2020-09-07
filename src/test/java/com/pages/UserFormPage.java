@@ -71,7 +71,7 @@ public class UserFormPage extends BasePage{
         wait.until(ExpectedConditions.presenceOfElementLocated(tagNameBy));
         WebElement loginPageElement=theWebDriver.findElement((headerBy));
         // TODO get the loginHeader text from UserDataProvider(done)
-         userData.getLoginPageHeader();
+//         userData.getLoginPageHeader();
         Assert.assertEquals(loginPageElement.getText(),loginHeader);
     }
 

@@ -20,7 +20,6 @@ public class UserDataProvider {
     ApplicationProperties applicationProps =
             new ApplicationProperties(ApplicationProperties.APPLICATION_PROP_FILE);
 
-
     public UserDataProvider(){
         super();
         if(validUsers==null || validUsers.size()==0){
@@ -35,37 +34,13 @@ public class UserDataProvider {
                 User aUser = new User();
                 aUser.setUserName(lineSplits[0]);
                 aUser.setPassword(lineSplits[1]);
+                aUser.setNewPwd(lineSplits[2]);
                 validUsers.add(aUser);
             }
         }
     }
 
-    private void getValidUsers(){
 
-    }
-
-    public String getPassword(String userName) throws UserNotFound {
-        String pwd=null;
-        for(User aUser : validUsers){
-            if(aUser.getUserName().equals(userName)){
-                pwd = aUser.getPassword();
-            }
-        }
-        return pwd;
-    }
-
-    /**
-     * returns a valid user from the test data
-     * @return
-     * @throws UserNotFound
-     */
-    public String getUserName() throws UserNotFound {
-        // TODO for any valid user
-        // random method
-        // valid users lo randomly get 1-4 numbers
-
-        return "shalini@kubecloudsinc.com";
-    }
 
     public String getTableColumn(String page, int columnNumber){
         //TODO read columns data from page-tables file and return column name like valid users, region data etc.
@@ -101,6 +76,29 @@ public class UserDataProvider {
         LOG.debug("Total lines in new file: "+linesToBeWritten);
         aFileHelper.writeDataIntoFile(validUsersFile, linesToBeWritten);
     }
+
+    public void flipPasswords(String userName){
+
+        String validUsersFile="src\\test\\resources\\testData\\validUserDetails.csv";
+        // = appProps.getValidUserFiles();
+        // TODO get the above value from application property file
+        LOG.debug("Inside the update credentials");
+        for(User aUser: validUsers){
+            if(aUser.getUserName().equals(userName)){
+                LOG.debug("found user name");
+                String currentPwd = aUser.getPassword();
+                aUser.setPassword(aUser.getNewPwd());
+                aUser.setNewPwd(currentPwd);
+            }
+        }
+        List<String> linesToBeWritten = new ArrayList<String>();
+        linesToBeWritten.add(VALID_USER_FILE_HEADER);
+        for(User aUser:validUsers){
+            linesToBeWritten.add(aUser.getUserName()+","+aUser.getPassword()+","+aUser.getNewPwd());
+        }
+        LOG.debug("Total lines in new file: "+linesToBeWritten);
+        aFileHelper.writeDataIntoFile(validUsersFile, linesToBeWritten);
+    }
     public String getWelcomeMsg(){
         return applicationProps.getWelcomeMsg();
     }
@@ -115,12 +113,26 @@ public class UserDataProvider {
 
         return validUsers.get(new Random().nextInt(validUsers.size()));
     }
+
+    public User getValidUser(String userName){
+        User returnUser=null;
+        for (User aUser : validUsers){
+            if(aUser.getUserName().equals(userName)){
+                returnUser = aUser;
+                break;
+            }
+        }
+        return returnUser;
+    }
+
     public String getFormError(){
         return applicationProps.getFormError();
     }
+
     public String getFirstNameError(){
         return applicationProps.getFirstNameError();
     }
+
     public void getRegionsTableColumn(){
 
     }
@@ -130,6 +142,5 @@ public class UserDataProvider {
         User user = data.getValidUser();
         LOG.debug(user.getUserName()+ " "+user.getPassword());
     }
-    
 
 }
