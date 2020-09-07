@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.shalini</groupId>
-    <artifactId>ProjectAutotools</artifactId>
+    <artifactId>ProjectAutotoolsFramework</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -15,10 +15,11 @@
         <log4j-version>1.2.17</log4j-version>
         <surefire-plugin-version>3.0.0-M5</surefire-plugin-version>
         <selenium-java-version>3.14.0</selenium-java-version>
+        <commons-io-version>2.7</commons-io-version>
     </properties>
 
     <build>
-        <finalName>ProjectAutotools</finalName>
+        <finalName>ProjectAutotoolsFramework</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -62,6 +63,11 @@
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
             <version>${selenium-java-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons-io-version}</version>
         </dependency>
     </dependencies>
 </project>
