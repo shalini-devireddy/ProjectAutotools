@@ -2,6 +2,7 @@ package com.stepdefs;
 
 import com.domain.User;
 import com.exceptions.UserNotFound;
+import com.google.common.collect.ImmutableSet;
 import com.pages.*;
 import com.utils.UserDataProvider;
 import io.cucumber.java.en.And;
@@ -10,6 +11,8 @@ import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import org.apache.log4j.Logger;
 import org.testng.Assert;
+
+import java.util.Collections;
 
 public class StepDefinitions {
 
@@ -21,11 +24,13 @@ public class StepDefinitions {
     UserFormPage theUserFormPage;
     EmployeeDetailsPage theEmployeeDetails;
     RegionDetailsPage theRegionDetailsPage;
+    EmployeeSearchPage theEmployeeSearchPage = new EmployeeSearchPage();
     BasePage theCurrentPage;
     String theFirstName;
     String theFormError;
     String theFirstNameError;
     User validUser;
+
 
     @Given("User is on Login Page")
     public void getLoginPage(){
@@ -206,6 +211,17 @@ public class StepDefinitions {
        // Assert.assertEquals(tableHeaders.get(columnNumber-1).getText(),expectedColumnName);
         theCurrentPage.closePage();
     }
+    @Then("{int} employees should display in employees table")
+    public void employeeCount(int totalEmployees){
+       theEmployeeDetails.employeeCount();
+        Assert.assertEquals(theEmployeeDetails.employeeCount(),totalEmployees);
+    }
+
+    @Then("user observes the last employee name is {string}")
+    public void vrifyLastEmployee(String employeeName){
+
+        
+    }
     //Region details
     @Given("Valid User is on region details page")
     public void goToRegionDetails() throws UserNotFound {
@@ -246,69 +262,51 @@ public class StepDefinitions {
 //        FluentWait<WebDriver> wait = new FluentWait<>(theWebDriver);
 //        wait.until(ExpectedConditions.presenceOfElementLocated(By.id("footer")));
 //    }
+
 //    //Employee search
-//    @Given("Valid user is on employee search page")
-//     public void employeeSearch() throws UserNotFound{
-//        goToHomePage();
-//        List<WebElement> dropDownMenus = theWebDriver.findElements(By.className("dropdown-toggle"));
-//        for (WebElement aWebElement : dropDownMenus){
-//            LOG.debug(aWebElement.getText());
-//            if(aWebElement.getText().trim().equals("Employee Information")){
-//                aWebElement.click();
-//                FluentWait<WebDriver> wait = new FluentWait<>(theWebDriver);
-//                wait.until(ExpectedConditions.presenceOfElementLocated(By.className("open")));
-//                theWebElement = theWebDriver.findElement(By.xpath("//a[contains(text(),'Employee Search')]"));
-//                theWebElement.click();
-//                wait.until(ExpectedConditions.presenceOfElementLocated(By.id("footer")));
-//            }
-//        }
-//
-//    }
+    @Given("Valid user is on employee search page")
+     public void employeeSearch() throws UserNotFound{
+       // goToHomePage();
+       theLoginPage=new LoginPage();
+        validUser = userData.getValidUser();
+        theLoginPage.loginUser(validUser.getUserName(), validUser.getPassword());
+        theWelcomePage= new WelcomePage(theLoginPage);
+        //Assert.assertEquals(theWelcomePage.getWelcomeMsg(),userData.getWelcomeMsg());
+        theEmployeeSearchPage= new EmployeeSearchPage(theWelcomePage);
+        theCurrentPage=theEmployeeSearchPage;
+
+    }
+
 //    @When("User enters {string} as first name")
 //    public void enterFirstName(String firstName){
-//        WebElement userNameInput = theWebDriver.findElement(By.tagName("input"));
-//        LOG.debug("entering firstname: "+firstName);
-//        userNameInput.sendKeys(firstName);
+//
+//        theEmployeeSearchPage.enterFirstName(firstName);
 //    }
+//
 //    @And("User enters {string} as last name")
 //    public void enterLastName(String lastName){
-//        WebElement userNameInput = theWebDriver.findElement(By.id("lastName"));
-//        LOG.debug("entering lastname: "+lastName);
-//        userNameInput.sendKeys(lastName);
+//        theEmployeeSearchPage.enterLastName(lastName);
 //    }
+//
 //    @And("User clicks search")
 //    public void clickSearch(){
-//
-//        WebElement button = theWebDriver.findElement(By.tagName("button"));
-//        button.click();
+//        theEmployeeSearchPage.clickSearch();
 //    }
 //
 //    @Then("User should see employee page with header {string}")
 //    public void empHeader(String header){
-//        checkHeader(header);
+//       theEmployeeSearchPage.checkHeader(header);
 //    }
-//
-//
+
+
 //    private void checkHeader(String header){
-//        FluentWait<WebDriver> wait = new FluentWait<>(theWebDriver);
-//        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//h1[contains(text(),'Alexis Bull')]")));
-//        WebElement msgElement = theWebDriver.findElement(By.xpath("//h1[contains(text(),'Alexis Bull')]"));
-//
-//        Assert.assertEquals(msgElement.getText(), header);
-//        // java generic classes
-//
+//        theEmployeeSearchPage.checkHeader(header);
 //    }
 //    @Then("user observes label {int} is {string}")
 //     public void checkSecondLabel(int rowNumber,String expecedRowName)
 //    {
 //
-//        theWebElement = theWebDriver.findElement(By.tagName("table"));
-//        List<WebElement> tableHeaders =  theWebElement.findElements(By.tagName("b"));
-//        for (WebElement aHeader : tableHeaders){
-//            LOG.debug(aHeader.getText());
-//        }
-//        Assert.assertEquals(tableHeaders.get(rowNumber-1).getText(),
-//                expecedRowName);
+//        theEmployeeSearchPage.checkSecondLabel(rowNumber,expecedRowName);
 //    }
-//
+
 }

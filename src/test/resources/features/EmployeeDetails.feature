@@ -24,3 +24,11 @@ Feature: Employee Details feature
   Scenario: To verify that the phone number columns is present
     Given Valid User is on employee details page
     Then user observes 5 column is "Phone Number"
+
+  Scenario: To verify the total number of employees in Employees table
+    Given Valid User is on employee details page
+    Then 107 employees should display in employees table
+
+  Scenario: To verify the last employee name in Employees table
+    Given Valid User is on employee details page
+    Then user observes the last employee name is "Winston"

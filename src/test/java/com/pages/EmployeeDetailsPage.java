@@ -18,20 +18,15 @@ public class EmployeeDetailsPage extends BasePage{
     private By classNameBy= By.className("dropdown-toggle");
     private By openBy= By.className("open");
     private By xpathBy= By.xpath("//a[contains(text(),'All Employees Details')]");
-    private By tagNameBy=By.tagName("p");
+    private By tagNameBy= By.tagName("tr");
     private By trTagNameBy=By.tagName("tr");
+    private By tbodyTagNameBy=By.tagName("tbody");
 
     private String EMPLOYEE_INFO= "Employee Information";
 
     public EmployeeDetailsPage(BasePage theCallingPage){
+
         theWebDriver=theCallingPage.theWebDriver;
-//        theWebElement=theWebDriver.findElement(classNameBy);
-//        theWebElement.click();
-//        wait=new FluentWait<>(theWebDriver);
-//        wait.until(ExpectedConditions.presenceOfElementLocated(openBy));
-//        theWebElement=theWebDriver.findElement(xpathBy);
-//        theWebElement.click();
-//        wait.until(ExpectedConditions.presenceOfElementLocated(tagNameBy));
         List<WebElement> dropDownMenus = theWebDriver.findElements(classNameBy);
         for (WebElement aWebElement : dropDownMenus){
             LOG.debug(aWebElement.getText());
@@ -45,5 +40,13 @@ public class EmployeeDetailsPage extends BasePage{
             }
         }
     }
+    public void employeeCount(){
 
+        wait=new FluentWait<>(theWebDriver);
+        wait.until(ExpectedConditions.presenceOfAllElementsLocatedBy(tagNameBy));
+        theWebElement=theWebDriver.findElement(tbodyTagNameBy);
+        LOG.debug(theWebElement.findElements(tagNameBy).size());
+        int totalCount= theWebElement.findElements(tagNameBy).size();
+
+    }
 }
