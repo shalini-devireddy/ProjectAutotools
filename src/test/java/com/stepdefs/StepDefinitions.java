@@ -24,7 +24,7 @@ public class StepDefinitions {
     UserFormPage theUserFormPage;
     EmployeeDetailsPage theEmployeeDetails;
     RegionDetailsPage theRegionDetailsPage;
-    EmployeeSearchPage theEmployeeSearchPage = new EmployeeSearchPage();
+    EmployeeSearchPage theEmployeeSearchPage;
     BasePage theCurrentPage;
     String theFirstName;
     String theFormError;
@@ -92,6 +92,7 @@ public class StepDefinitions {
     }
     @And("user navigates to user form page from welcome page")
     public void goToUserForm(){
+        theWelcomePage.clickMenuItem(BasePage.MYPROFILE);
         theUserFormPage = new UserFormPage(theWelcomePage);
     }
     @When("User inspects the first name field value")
@@ -200,6 +201,9 @@ public class StepDefinitions {
         theLoginPage.loginUser(validUser.getUserName(), validUser.getPassword());
         theWelcomePage= new WelcomePage(theLoginPage);
         Assert.assertEquals(theWelcomePage.getWelcomeMsg(),userData.getWelcomeMsg());
+
+        theWelcomePage.clickMenuItem(BasePage.ALL_EMPLOYEE_DETAILS);
+
         theEmployeeDetails=new EmployeeDetailsPage(theWelcomePage);
         theCurrentPage = theEmployeeDetails;
         //theEmployeeDetails.goToEmpDetails();
@@ -230,6 +234,7 @@ public class StepDefinitions {
         validUser = userData.getValidUser();
         theLoginPage.loginUser(validUser.getUserName(), validUser.getPassword());
         theWelcomePage = new WelcomePage(theLoginPage);
+        theWelcomePage.clickMenuItem(BasePage.REGIONS);
         theRegionDetailsPage = new RegionDetailsPage(theWelcomePage);
         theCurrentPage = theRegionDetailsPage;
 
@@ -271,6 +276,8 @@ public class StepDefinitions {
         validUser = userData.getValidUser();
         theLoginPage.loginUser(validUser.getUserName(), validUser.getPassword());
         theWelcomePage= new WelcomePage(theLoginPage);
+        theWelcomePage.clickMenuItem(BasePage.EMPLOYEE_SEARCH);
+
         //Assert.assertEquals(theWelcomePage.getWelcomeMsg(),userData.getWelcomeMsg());
         theEmployeeSearchPage= new EmployeeSearchPage(theWelcomePage);
         theCurrentPage=theEmployeeSearchPage;

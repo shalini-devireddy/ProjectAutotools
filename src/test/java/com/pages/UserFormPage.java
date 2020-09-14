@@ -13,12 +13,11 @@ public class UserFormPage extends BasePage{
 
     private static final Logger LOG = Logger.getLogger(UserFormPage.class);
     public String FORM_ERROR="Form Errors";
-    private By dropDownBy = By.className("dropdown-toggle");
-    private By classNameBy = By.className("open");
-    private By xpathBy = By.xpath("//a[contains(text(),'My Profile')]");
+
+
     private By buttonBy = By.className("btn-primary");
     private By idBy = By.id("user.firstName");
-    private By logOutBy= By.xpath("//a[contains(text(),'Logout')]");
+
     private By tagNameBy= By.tagName("strong");
     private By headerBy= By.tagName("h1");
     private By passWordBy= By.id("password");
@@ -32,14 +31,8 @@ public class UserFormPage extends BasePage{
 
     public UserFormPage(BasePage theCallingPage){
         theWebDriver = theCallingPage.theWebDriver;
-
-        theWebElement = theWebDriver.findElement(dropDownBy);
-        theWebElement.click();
-        wait = new FluentWait<>(theWebDriver);
-        wait.until(ExpectedConditions.presenceOfElementLocated(classNameBy));
-        theWebElement = theWebDriver.findElement(xpathBy);
-        theWebElement.click();
         wait.until(ExpectedConditions.presenceOfElementLocated(buttonBy));
+
     }
 
 
@@ -55,15 +48,8 @@ public class UserFormPage extends BasePage{
     }
 
     public void logOut(){
-//        goToUserForm();
-        theWebElement = theWebDriver.findElement(dropDownBy);
-        theWebElement.click();
-        wait = new FluentWait<>(theWebDriver);
-        wait.until(ExpectedConditions.presenceOfElementLocated(classNameBy));
-        theWebElement = theWebDriver.findElement(logOutBy);
-        theWebElement.click();
-        wait.until(ExpectedConditions.presenceOfElementLocated(buttonBy));
-        theWebDriver.close();
+
+
     }
     public void userFormToLogin(String loginHeader){
         callUserFormDirect();

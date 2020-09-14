@@ -6,15 +6,12 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 
 public class RegionDetailsPage extends BasePage{
-    private By xpathBy=By.xpath("//a[contains(text(),'Region Details')]");
-    private By idBy= By.id("footer");
+
 
     public RegionDetailsPage(BasePage theCallingPage){
 
         theWebDriver = theCallingPage.theWebDriver;
-        theWebElement = theWebDriver.findElement(xpathBy);
-        theWebElement.click();
-        FluentWait<WebDriver> wait = new FluentWait<>(theWebDriver);
+        wait = new FluentWait<>(theWebDriver);
         wait.until(ExpectedConditions.presenceOfElementLocated(idBy));
     }
 }
