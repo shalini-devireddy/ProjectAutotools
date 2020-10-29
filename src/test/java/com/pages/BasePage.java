@@ -56,6 +56,8 @@ public class BasePage {
     protected By regionDetailsBy=By.xpath("//a[contains(text(),'Region Details')]");
     protected By idBy= By.id("footer");
 
+    protected BasePage theCurrentPage=this;
+
     public void closePage(){
         theWebDriver.close();
     }
@@ -71,7 +73,6 @@ public class BasePage {
             e.printStackTrace();
         }
     }
-
     public void inspectSecondColumn(int columnNumber, String expectedColumnName){
 
         theWebElement = theWebDriver.findElement(tableBy);
@@ -119,7 +120,6 @@ public class BasePage {
                 theWebElement = theWebDriver.findElement(userFormBy);
                 theWebElement.click();
                 wait.until(ExpectedConditions.presenceOfElementLocated(buttonBy));
-
                 break;
             case LOGOUT:
                 theWebElement = theWebDriver.findElement(dropDownToggleBy);
@@ -132,7 +132,6 @@ public class BasePage {
                 theWebDriver.close();
                 break;
             case REGIONS:
-
                 theWebElement = theWebDriver.findElement(regionDetailsBy);
                 theWebElement.click();
                 wait = new FluentWait<>(theWebDriver);
@@ -140,5 +139,15 @@ public class BasePage {
                 break;
         }
 
+    }
+    public void closeBrowser(){
+         theWebDriver.close();
+    }
+
+    protected void scrollToElement(WebElement theWebElement){
+        ((JavascriptExecutor) theWebDriver).executeScript("arguments[0].scrollIntoView(true);", theWebElement);
+    }
+    public BasePage getCurrentPage(){
+        return theCurrentPage;
     }
 }

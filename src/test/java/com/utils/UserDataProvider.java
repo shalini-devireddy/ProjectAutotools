@@ -1,7 +1,10 @@
 package com.utils;
 
+import com.domain.Regions;
 import com.domain.User;
-import com.exceptions.UserNotFound;
+import io.cucumber.core.internal.gherkin.deps.com.google.gson.JsonObject;
+import jdk.nashorn.internal.parser.JSONParser;
+import jdk.nashorn.internal.parser.Parser;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -12,18 +15,23 @@ public class UserDataProvider {
 
     private static final Logger LOG = Logger.getLogger(UserDataProvider.class);
     private List<User> validUsers = new ArrayList<User>();
+    private List<Regions>regions= new ArrayList<>();
     private String VALID_USER_FILE = "/testData/validUserDetails.csv";
-//    private String VALID_USER_FILE = "src\\test\\resources\\testData\\validUsers.csv";
+    private String VALID_JSON_USER_FILE="/testData/validUsers.json";
     private String VALID_USER_FILE_HEADER = "##username,password,title,organization";
-
+    JSONParser aParser;
     FileHelper aFileHelper = new FileHelper();
-    ApplicationProperties applicationProps =
-            new ApplicationProperties(ApplicationProperties.APPLICATION_PROP_FILE);
 
     public UserDataProvider(){
         super();
         if(validUsers==null || validUsers.size()==0){
             processUsers(aFileHelper.readDataFromFile(VALID_USER_FILE));
+        }
+    }
+    public UserDataProvider(String fileType ){
+        if(validUsers ==null || getValidUser().size()==0){
+            fileType=VALID_JSON_USER_FILE;
+            processJsonUsers(aFileHelper.readDataFromFile((fileType)));
         }
     }
 
@@ -32,6 +40,7 @@ public class UserDataProvider {
             if(!line.contains("##")) {
                 String[] lineSplits = line.split(",");
                 User aUser = new User();
+//                LOG.debug(lineSplits[0]+" "+ lineSplits[1]+" "+ lineSplits[2]);
                 aUser.setUserName(lineSplits[0]);
                 aUser.setPassword(lineSplits[1]);
                 aUser.setNewPwd(lineSplits[2]);
@@ -40,15 +49,27 @@ public class UserDataProvider {
         }
     }
 
+    private void processJsonUsers(List<String> lines){
+
+        Object obj= Parser.parse(lines);
+        aParser= new JSONParser();
+        JsonObject jsonObject=(JsonObject) obj;
+    }
 
 
     public String getTableColumn(String page, int columnNumber){
         //TODO read columns data from page-tables file and return column name like valid users, region data etc.
         return "First Name";
+//
     }
 
     public String getRegionName(String countryName){
         // TODO Same as users data logic get the data from the file
+        Regions regionName=null;
+        for (Regions aTable : regions){
+
+        }
+            //if (aTable.getName())
         return "Europe";
     }
     // TODO method Same as users data logic get the data from the file
@@ -99,15 +120,6 @@ public class UserDataProvider {
         LOG.debug("Total lines in new file: "+linesToBeWritten);
         aFileHelper.writeDataIntoFile(validUsersFile, linesToBeWritten);
     }
-    public String getWelcomeMsg(){
-        return applicationProps.getWelcomeMsg();
-    }
-    public String getLoginPageHeader(){
-        return applicationProps.getLoginPageHeader();
-    }
-    public String getSuccessMsg(){
-        return applicationProps.getUserSuccessMessage();
-    }
 
     public User getValidUser(){
 
@@ -123,14 +135,6 @@ public class UserDataProvider {
             }
         }
         return returnUser;
-    }
-
-    public String getFormError(){
-        return applicationProps.getFormError();
-    }
-
-    public String getFirstNameError(){
-        return applicationProps.getFirstNameError();
     }
 
     public void getRegionsTableColumn(){

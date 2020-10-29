@@ -1,6 +1,6 @@
 package com.domain;
 
-public class LocationsTable extends GenericTable{
+public class Locations extends GenericTable{
     private String id;
     private String streetAddress;
     private String postalCode;

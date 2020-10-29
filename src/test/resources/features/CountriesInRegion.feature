@@ -18,3 +18,4 @@ Feature: Countries in region feature
       |Americas|
       |Asia|
       |Middle East and Africa|
+

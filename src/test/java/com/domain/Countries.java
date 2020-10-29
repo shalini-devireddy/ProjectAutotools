@@ -1,6 +1,6 @@
 package com.domain;
 
-public class RegionsTable  extends GenericTable{
+public class Countries extends GenericTable{
     private String id;
     private String name;
 

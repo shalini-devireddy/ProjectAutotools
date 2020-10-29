@@ -16,6 +16,12 @@ public class CountriesInRegionPage extends BasePage{
         WebElement theWebElement = theWebDriver.findElement(xpathBy);
         theWebElement.click();
         FluentWait<WebDriver> wait = new FluentWait<>(theWebDriver);
-        wait.until(ExpectedConditions.presenceOfElementLocated(By.id("footer")));
+        wait.until(ExpectedConditions.presenceOfElementLocated(footerBy));
+    }
+
+    public int countCountries(){
+        theWebElement=theWebDriver.findElement(tbodyTagNameBy);
+        return theWebElement.findElements(trTagNameBy).size();
+
     }
 }

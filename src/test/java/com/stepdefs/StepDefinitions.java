@@ -2,8 +2,9 @@ package com.stepdefs;
 
 import com.domain.User;
 import com.exceptions.UserNotFound;
-import com.google.common.collect.ImmutableSet;
 import com.pages.*;
+import com.utils.ApplicationProperties;
+import com.utils.TestDataProvider;
 import com.utils.UserDataProvider;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
@@ -12,28 +13,32 @@ import io.cucumber.java.en.When;
 import org.apache.log4j.Logger;
 import org.testng.Assert;
 
-import java.util.Collections;
-
 public class StepDefinitions {
 
     private static final Logger LOG = Logger.getLogger(StepDefinitions.class);
 
-    UserDataProvider userData = new UserDataProvider();
+    TestDataProvider testDataProvider=new TestDataProvider();
+    ApplicationProperties appProps = new ApplicationProperties();
     LoginPage theLoginPage;
     WelcomePage theWelcomePage;
     UserFormPage theUserFormPage;
     EmployeeDetailsPage theEmployeeDetails;
     RegionDetailsPage theRegionDetailsPage;
     EmployeeSearchPage theEmployeeSearchPage;
+    CountriesInRegionPage theCountriesPage;
     BasePage theCurrentPage;
+    LogoutPage theLogoutPage;
     String theFirstName;
     String theFormError;
     String theFirstNameError;
+    String theLastNameError;
+    String theSuccessmsg;
     User validUser;
 
 
     @Given("User is on Login Page")
-    public void getLoginPage(){
+    public void getLoginPage()
+    {
         theLoginPage = new LoginPage();
     }
     @When("User enters {string} as username")
@@ -47,6 +52,7 @@ public class StepDefinitions {
     @And("User checks remember me check box")
     public void checkRememberMe(){
           theLoginPage.checkRememberMe();
+          theLoginPage.takeScreenShot("rememberPage");
     }
     @And("User clicks Sign In")
     public void clickSignIn(){
@@ -57,9 +63,13 @@ public class StepDefinitions {
     public void checkAndCloseWelcome(){
         theWelcomePage = new WelcomePage(theLoginPage);
         //Assert.assertEquals(theWelcomePage.getWelcomeMsg(), theWelcomePage.WELCOME_MESSAGE);//doubt
-        Assert.assertEquals(theWelcomePage.getWelcomeMsg(),userData.getWelcomeMsg());
+        Assert.assertEquals(theWelcomePage.getWelcomeMsg(),appProps.getWelcomeMsg());
         theWelcomePage.takeScreenShot(theWelcomePage.WELCOME_PAGE);
-        theWelcomePage.closePage();
+//        theWelcomePage.closePage();
+    }
+    @And("User closes the browser")
+    public void closeBrowser(){
+        theCurrentPage.closeBrowser();
     }
 
     @Then("User should see error message")
@@ -77,11 +87,12 @@ public class StepDefinitions {
     @Given("User logged in as {string}")
     public void loginUser(String userName) throws UserNotFound {
         theLoginPage =  new  LoginPage();
-        validUser = userData.getValidUser(userName);
+        validUser = testDataProvider.getValidUser(userName);
+        LOG.debug(validUser.getUserName()+" "+validUser.getPassword());
         theLoginPage.loginUser(validUser.getUserName(), validUser.getPassword());
         // Welcome message get from a properties files (done)
         theWelcomePage = new WelcomePage(theLoginPage);
-        Assert.assertEquals(theWelcomePage.getWelcomeMsg(), userData.getWelcomeMsg());
+        Assert.assertEquals(theWelcomePage.getWelcomeMsg(), appProps.getWelcomeMsg());
     }
     @And("the same user to login with old password")
     public void loginWithOldPwd() throws UserNotFound {
@@ -94,6 +105,7 @@ public class StepDefinitions {
     public void goToUserForm(){
         theWelcomePage.clickMenuItem(BasePage.MYPROFILE);
         theUserFormPage = new UserFormPage(theWelcomePage);
+        theCurrentPage=theUserFormPage;
     }
     @When("User inspects the first name field value")
     public void inspectFirstName(){
@@ -106,13 +118,15 @@ public class StepDefinitions {
     }
     @And("logout")
     public void logOut(){
-       theUserFormPage.logOut();
+        theWelcomePage.clickMenuItem(BasePage.LOGOUT);
+        theLogoutPage=new LogoutPage(theWelcomePage);
+
     }
     @Then("User form direct call should take to login page with {string}")
     public void userFormToLogin(String loginHeader){
         theUserFormPage.userFormToLogin(loginHeader);
     }
-//    @Then("User form direct call should take to userform page {string}")
+    @Then("User form direct call should take to userform page")
 //    public void directToUserForm(String userFormHeader){
 //        callUserFormDirect();
 //        FluentWait<WebDriver> wait = new FluentWait<>(theWebDriver);
@@ -122,7 +136,7 @@ public class StepDefinitions {
 //        Assert.assertEquals(userFormElement.getText(),userFormHeader);
 //    }
 //
-    private void callUserFormDirect(){
+    public void callUserFormDirect(){
         theUserFormPage.callUserFormDirect();
     }
 
@@ -161,9 +175,9 @@ public class StepDefinitions {
         theLoginPage.enterPwd(validUser.getNewPwd());
         theLoginPage.clickSignIn();
         theWelcomePage = new WelcomePage(theLoginPage);
-        userData.flipPasswords(validUser.getUserName());
+        testDataProvider.flipPasswords(validUser.getUserName());
 
-        Assert.assertEquals(theWelcomePage.getWelcomeMsg(),userData.getWelcomeMsg());
+        Assert.assertEquals(theWelcomePage.getWelcomeMsg(),appProps.getWelcomeMsg());
 
         theWelcomePage.closePage();
     }
@@ -189,18 +203,46 @@ public class StepDefinitions {
     public void getFirstNameError(){
         theFirstNameError=theUserFormPage.getFirstNameError();
         // Assert.assertEquals(theUserFormPage.getFirstNameError(),firstNameError);
-        Assert.assertEquals(theFirstNameError,userData.getFirstNameError());
+        Assert.assertEquals(theFirstNameError,appProps.getFirstNameError());
         theUserFormPage.closePage();
     }
 
+    @And("user clears the Last Name field")
+     public void clearLastName(){
+         theUserFormPage.clearLastName();
+    }
+    @And("an error message should show next to lastname field")
+    public void getLastNameError(){
+        theLastNameError=theUserFormPage.getLastNameError();
+        Assert.assertEquals(theLastNameError,appProps.getLastNameError());
+        theUserFormPage.closePage();
+    }
+    @And("user clears the Title field")
+    public void clearTitle(){
+         theUserFormPage.clearTitle();
+    }@And("a success message should display on top of the table")
+    public void successMsg(){
+             theSuccessmsg=theUserFormPage.getSuccessMsg();
+             Assert.assertEquals(theSuccessmsg,appProps.getSuccessMessage());
+             theUserFormPage.closePage();
+    }
+    @And("user clears the Organization field")
+    public void clearOrganization() {
+        theUserFormPage.clearOrganization();
+    }
+    @And("user can not edit the Email field")
+    public void clearEmail(){
+        theUserFormPage.clearEmail();
+        theUserFormPage.closePage();
+    }
     //employee details
     @Given("Valid User is on employee details page")
     public void goToEmpDetails() throws UserNotFound{
         theLoginPage= new LoginPage();
-        validUser = userData.getValidUser();
+        validUser = testDataProvider.getValidUser();
         theLoginPage.loginUser(validUser.getUserName(), validUser.getPassword());
         theWelcomePage= new WelcomePage(theLoginPage);
-        Assert.assertEquals(theWelcomePage.getWelcomeMsg(),userData.getWelcomeMsg());
+        Assert.assertEquals(theWelcomePage.getWelcomeMsg(),appProps.getWelcomeMsg());
 
         theWelcomePage.clickMenuItem(BasePage.ALL_EMPLOYEE_DETAILS);
 
@@ -222,8 +264,9 @@ public class StepDefinitions {
     }
 
     @Then("user observes the last employee name is {string}")
-    public void vrifyLastEmployee(String employeeName){
+    public void verifyLastEmployee(String employeeName){
 
+        theEmployeeDetails.scrollToEmployee(employeeName);
 
     }
     //Region details
@@ -231,7 +274,7 @@ public class StepDefinitions {
     public void goToRegionDetails() throws UserNotFound {
 
         theLoginPage=new LoginPage();
-        validUser = userData.getValidUser();
+        validUser = testDataProvider.getValidUser();
         theLoginPage.loginUser(validUser.getUserName(), validUser.getPassword());
         theWelcomePage = new WelcomePage(theLoginPage);
         theWelcomePage.clickMenuItem(BasePage.REGIONS);
@@ -239,10 +282,21 @@ public class StepDefinitions {
         theCurrentPage = theRegionDetailsPage;
 
     }
+
+    @And("User clicks on {string} region to observe the countries")
+    public void clickRegion(String name){
+        theRegionDetailsPage.clickRegion(name);
+
+    }
+    @Then("the user should see countries in the region")
+    public void displayCountries(){
+
+    }
 //    //Countries in region
     @Given("Valid User is on countries in {string} region page")
     public void goToCountriesInRegion(String regionName) throws UserNotFound{
         goToRegionDetails();
+        countCountries();
 
     }
 //    //locations in country
@@ -273,7 +327,7 @@ public class StepDefinitions {
      public void employeeSearch() throws UserNotFound{
        // goToHomePage();
        theLoginPage=new LoginPage();
-        validUser = userData.getValidUser();
+        validUser = testDataProvider.getValidUser();
         theLoginPage.loginUser(validUser.getUserName(), validUser.getPassword());
         theWelcomePage= new WelcomePage(theLoginPage);
         theWelcomePage.clickMenuItem(BasePage.EMPLOYEE_SEARCH);
@@ -315,5 +369,8 @@ public class StepDefinitions {
 //
 //        theEmployeeSearchPage.checkSecondLabel(rowNumber,expecedRowName);
 //    }
-
+     @Then("the user counts the countries and validates the count to be correct")
+    public void countCountries(){
+            theCountriesPage.countCountries();
+     }
 }

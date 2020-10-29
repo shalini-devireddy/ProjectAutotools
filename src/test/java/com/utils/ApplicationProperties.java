@@ -9,8 +9,9 @@ import java.util.Properties;
 public class ApplicationProperties {
 
     public static final String APPLICATION_PROP_FILE= "/testData/applicationProperties.cfg";
-    private static final Logger LOG = Logger.getLogger(UserDataProvider.class);
+    private static final Logger LOG = Logger.getLogger(ApplicationProperties.class);
     private Properties appProps = new Properties();
+
     private String LOGIN_PAGE_HEADER_KEY = "loginPageHeader";
     private String EMPLOYEE_TABLE_KEY = "employeesTable";
     private String WELCOME_MSG_KEY = "welcomeMsg";
@@ -23,11 +24,16 @@ public class ApplicationProperties {
     private String ERROR_MSG_KEY="userErrorMsg";
     private String FORM_ERROR_KEY="formError";
     private String FIRSTNAME_ERROR_KEY="firstNameError";
+    private String LASTNAME_ERROR_KEY="lastNameError";
+    private String EUROPE_KEY="Europe";
+    private String ASIA_KEY="Asia";
+    private String AMERICAS_KEY="Americas";
+    private String MIDDLEEASTANDAFRICA_KEY="MiddleEastandAfrica";
 
-     public ApplicationProperties(String path){
+     public ApplicationProperties(){
         super();
         try {
-         appProps.load(new FileInputStream(getClass().getResource(path).getFile()));
+         appProps.load(new FileInputStream(getClass().getResource(APPLICATION_PROP_FILE).getFile()));
 //            appProps.load(new FileInputStream("src\\test\\resources\\testData\\applicationProperties.cfg"));
         } catch (IOException e) {
          LOG.error("Cannot load properties file");
@@ -60,7 +66,7 @@ public class ApplicationProperties {
     public String getUserFormHeader(){
         return appProps.getProperty(USERFORM_PAGE_HEADER_KEY);
     }
-    public String getUserSuccessMessage(){
+    public String getSuccessMessage(){
         return appProps.getProperty(USERFORM_SUCCESS_MSG);
 
     }
@@ -71,6 +77,9 @@ public class ApplicationProperties {
     public String getFirstNameError(){
         return appProps.getProperty(FIRSTNAME_ERROR_KEY);
 
+    }
+    public String getLastNameError(){
+         return appProps.getProperty(LASTNAME_ERROR_KEY);
     }
 
     public String getRegionsTableColumn(int columnNumber){
@@ -92,4 +101,24 @@ public class ApplicationProperties {
         return columnString.split(",")[columnNumber-1].trim();
     }
 
+    public String getCountriesInEurope(int rowNumber){
+
+         String rowString=appProps.getProperty(EUROPE_KEY);
+         return rowString.split(",")[rowNumber-1].trim();
+    }
+    public String getCountriesInAsia(int rowNumber){
+
+        String rowString=appProps.getProperty(ASIA_KEY);
+        return rowString.split(",")[rowNumber-1].trim();
+    }
+    public String getCountriesInAmerics(int rowNumber){
+
+        String rowString=appProps.getProperty(AMERICAS_KEY);
+        return rowString.split(",")[rowNumber-1].trim();
+    }
+    public String getCountriesInMiddleEastandAfrica(int rowNumber){
+
+        String rowString=appProps.getProperty(MIDDLEEASTANDAFRICA_KEY);
+        return rowString.split(",")[rowNumber-1].trim();
+    }
 }

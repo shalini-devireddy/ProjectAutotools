@@ -2,6 +2,7 @@ package com.pages;
 
 import org.apache.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -17,7 +18,7 @@ public class UserFormPage extends BasePage{
 
     private By buttonBy = By.className("btn-primary");
     private By idBy = By.id("user.firstName");
-
+    private By lastNameBy=By.id("user.lastName");
     private By tagNameBy= By.tagName("strong");
     private By headerBy= By.tagName("h1");
     private By passWordBy= By.id("password");
@@ -28,9 +29,15 @@ public class UserFormPage extends BasePage{
     private String VALUE= "value";
     private By formErrorBy=By.xpath("//strong[contains(text(),'Form Errors')]");
     private By firstNameErrorBy=By.id("user.firstName.errors");
+    private By lastNameErrorBy=By.id("user.lastName.errors");
+    private By titleBy=By.id("user.title");
+    private By organizationBy=By.id("user.organization");
+    private By emailBy=By.id("user.email");
 
     public UserFormPage(BasePage theCallingPage){
         theWebDriver = theCallingPage.theWebDriver;
+        theCurrentPage=this;
+        wait = new FluentWait<WebDriver>(theWebDriver);
         wait.until(ExpectedConditions.presenceOfElementLocated(buttonBy));
 
     }
@@ -47,10 +54,7 @@ public class UserFormPage extends BasePage{
         theWebDriver.close();
     }
 
-    public void logOut(){
 
-
-    }
     public void userFormToLogin(String loginHeader){
         callUserFormDirect();
          wait = new FluentWait<>(theWebDriver);
@@ -94,8 +98,33 @@ public class UserFormPage extends BasePage{
         WebElement formErrorMsg=theWebDriver.findElement(formErrorBy);
         return formErrorMsg.getText();
     }
+
     public String getFirstNameError(){
         WebElement firstNameErrorMsg=theWebDriver.findElement(firstNameErrorBy);
         return firstNameErrorMsg.getText();
+    }
+
+    public void clearLastName(){
+        theWebDriver.findElement(lastNameBy).clear();
+    }
+
+    public String getLastNameError(){
+        WebElement lastNameErrorMsg=theWebDriver.findElement(lastNameErrorBy);
+        return lastNameErrorMsg.getText();
+    }
+
+    public void clearTitle(){
+        theWebDriver.findElement(titleBy).clear();
+    }
+    public void clearOrganization(){
+        theWebDriver.findElement(organizationBy).clear();
+    }
+
+    public void clearEmail(){
+        //theWebDriver.findElement(emailBy).clear();
+        WebElement email_element = theWebDriver.findElement(emailBy);
+        String email_Str = email_element.getAttribute("readonly");
+        Assert.assertNotNull(email_Str);
+
     }
 }

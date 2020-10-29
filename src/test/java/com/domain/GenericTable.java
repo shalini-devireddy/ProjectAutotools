@@ -6,7 +6,7 @@ import javafx.application.Application;
 public class GenericTable {
 
     ApplicationProperties appPros =
-            new ApplicationProperties(ApplicationProperties.APPLICATION_PROP_FILE);
+            new ApplicationProperties();
 
     public String getNthColumn(String tableName, int columnNumber){
         String columnName=null;
@@ -29,4 +29,15 @@ public class GenericTable {
         }
         return columnName;
     }
+//    public String getCountry(String regionName,int rowNumber){
+//        String countryName=null;
+//        switch (regionName){
+//            case "europe":
+//                countryName=appPros.getCountriesInEurope(rowNumber);
+//                break;
+//            case "asia":
+//                countryName=appPros.
+//        }
+//        return countryName;
+//    }
 }
