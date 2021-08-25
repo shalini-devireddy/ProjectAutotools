@@ -1,11 +1,8 @@
 package com.pages;
 
-import com.exceptions.UserNotFound;
-import com.stepdefs.StepDefinitions;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
-import org.testng.Assert;
 
 public class WelcomePage extends BasePage{
 

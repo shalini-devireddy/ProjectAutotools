@@ -1,5 +1,6 @@
 package com.utils;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.Properties;
@@ -11,7 +12,7 @@ public class RegionsDataProvider {
 
     public RegionsDataProvider(){
         try {
-            FileReader reader = new FileReader(REGIONS_DATA_FILE);
+            FileReader reader = new FileReader(RegionsDataProvider.class.getResource(REGIONS_DATA_FILE).getFile());
             props.load(reader);
         } catch (IOException e) {
             e.printStackTrace();

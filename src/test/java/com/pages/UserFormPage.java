@@ -61,9 +61,9 @@ public class UserFormPage extends BasePage{
         wait.until(ExpectedConditions.presenceOfElementLocated(tagNameBy));
         WebElement loginPageElement=theWebDriver.findElement((headerBy));
         // TODO get the loginHeader text from UserDataProvider(done)
-//         userData.getLoginPageHeader();
         Assert.assertEquals(loginPageElement.getText(),loginHeader);
     }
+//         userData.getLoginPageHeader();
 
     public void callUserFormDirect(){
         System.setProperty(GECKO_DRIVER_PROPERTY,GECKO_DRIVER_LOCATION);

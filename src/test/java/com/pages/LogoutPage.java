@@ -10,9 +10,9 @@ public class LogoutPage extends BasePage{
     public LogoutPage(BasePage theCallingPage){
 
         theWebDriver = theCallingPage.theWebDriver;
-        wait = new FluentWait<WebDriver>(theWebDriver);
+        wait = new FluentWait<>(theWebDriver);
 
         wait.until(ExpectedConditions.presenceOfElementLocated(buttonBy));
-        //theWebDriver.close();
+        theWebDriver.close();
     }
 }

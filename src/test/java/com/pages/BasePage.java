@@ -1,6 +1,6 @@
 package com.pages;
 
-//import com.stepdefs.StepDefinitions;
+//import com.oldstepdefs.StepDefinitions;
 //import com.utils.UserDataProvider;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
@@ -20,6 +20,8 @@ public class BasePage {
     protected String LOGIN_URL = "http://23.120.24.187:10080/autotoolsv2";
     protected String GECKO_DRIVER_LOCATION = "C:\\Users\\Haripemireddy\\QATraining\\Gecko\\geckodriver.exe";
     protected String GECKO_DRIVER_PROPERTY = "webdriver.gecko.driver";
+    protected String CHROME_DRIVER_LOCATION = "C:\\Users\\Haripemireddy\\QATraining\\Chrome\\chromedriver.exe";
+    protected String CHROME_DRIVER_PROPERTY = "webdriver.chrome.driver";
 
     public static final String EMPLOYEE_INFO="Employee Information";
     public static final String ALL_EMPLOYEE_DETAILS= "All Employee Details";
@@ -29,7 +31,7 @@ public class BasePage {
     public static final String REGIONS="Region Details";
 
 //    UserDataProvider userData= new UserDataProvider();
-    protected WebDriver theWebDriver;
+    protected static WebDriver theWebDriver;
     protected WebElement theWebElement;
     FluentWait<WebDriver> wait;
 

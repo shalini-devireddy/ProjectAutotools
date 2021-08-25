@@ -3,8 +3,6 @@ package com.utils;
 import com.domain.Regions;
 import com.domain.User;
 import io.cucumber.core.internal.gherkin.deps.com.google.gson.JsonObject;
-import jdk.nashorn.internal.parser.JSONParser;
-import jdk.nashorn.internal.parser.Parser;
 import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
@@ -19,7 +17,7 @@ public class UserDataProvider {
     private String VALID_USER_FILE = "/testData/validUserDetails.csv";
     private String VALID_JSON_USER_FILE="/testData/validUsers.json";
     private String VALID_USER_FILE_HEADER = "##username,password,title,organization";
-    JSONParser aParser;
+//    JSONParser aParser;
     FileHelper aFileHelper = new FileHelper();
 
     public UserDataProvider(){
@@ -29,10 +27,10 @@ public class UserDataProvider {
         }
     }
     public UserDataProvider(String fileType ){
-        if(validUsers ==null || getValidUser().size()==0){
-            fileType=VALID_JSON_USER_FILE;
-            processJsonUsers(aFileHelper.readDataFromFile((fileType)));
-        }
+//        if(validUsers ==null || getValidUser().size()==0){
+//            fileType=VALID_JSON_USER_FILE;
+//            processJsonUsers(aFileHelper.readDataFromFile((fileType)));
+//        }
     }
 
     private void processUsers(List<String> lines){
@@ -49,12 +47,7 @@ public class UserDataProvider {
         }
     }
 
-    private void processJsonUsers(List<String> lines){
 
-        Object obj= Parser.parse(lines);
-        aParser= new JSONParser();
-        JsonObject jsonObject=(JsonObject) obj;
-    }
 
 
     public String getTableColumn(String page, int columnNumber){
