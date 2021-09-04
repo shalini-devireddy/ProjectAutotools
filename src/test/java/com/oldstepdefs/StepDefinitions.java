@@ -14,73 +14,73 @@ import org.testng.Assert;
 
 public class StepDefinitions {
 
-//    private static final Logger LOG = Logger.getLogger(StepDefinitions.class);
-//
-//    TestDataProvider testDataProvider=new TestDataProvider();
-//    ApplicationProperties appProps = new ApplicationProperties();
-//    LoginPage theLoginPage;
-//    WelcomePage theWelcomePage;
-//    UserFormPage theUserFormPage;
-//    EmployeeDetailsPage theEmployeeDetails;
-//    RegionDetailsPage theRegionDetailsPage;
-//    EmployeeSearchPage theEmployeeSearchPage;
-//    CountriesInRegionPage theCountriesPage;
-//    BasePage theCurrentPage;
-//    LogoutPage theLogoutPage;
-//    String theFirstName;
-//    String theFormError;
-//    String theFirstNameError;
-//    String theLastNameError;
-//    String theSuccessmsg;
-//    User validUser;
-//
-//    @Given("User is on Login Page old")
-//    public void getLoginPage()
-//    {
-//        theLoginPage = new LoginPage();
-//    }
-//    @When("User enters {string} as username old")
-//    public void enterUsername(String aUserName){
-//        theLoginPage.enterUsername(aUserName);
-//    }
-//    @And("User enters {string} as password old")
-//    public void enterPwd(String aPassword){
-//        theLoginPage.enterPwd(aPassword);
-//    }
-//    @And("User checks remember me check box old")
-//    public void checkRememberMe(){
-//          theLoginPage.checkRememberMe();
-//          theLoginPage.takeScreenShot("rememberPage");
-//    }
-//    @And("User clicks Sign In old")
-//    public void clickSignIn(){
-//        theLoginPage.clickSignIn();
-//    }
-//
-//    @Then("User should see Welcome page old")
-//    public void checkAndCloseWelcome(){
-//        theWelcomePage = new WelcomePage(theLoginPage);
-//        //Assert.assertEquals(theWelcomePage.getWelcomeMsg(), theWelcomePage.WELCOME_MESSAGE);//doubt
-//        Assert.assertEquals(theWelcomePage.getWelcomeMsg(),appProps.getWelcomeMsg());
-//        theWelcomePage.takeScreenShot(theWelcomePage.WELCOME_PAGE);
-////        theWelcomePage.closePage();
-//    }
-//    @And("User closes the browser old")
-//    public void closeBrowserOld(){
-//        theCurrentPage.closeBrowser();
-//    }
-//
-//    @Then("User should see error message old")
-//    public void checkErrorMessage(){
-//        Assert.assertEquals(theLoginPage.getErrorMsg(),theLoginPage.LOGIN_FAIL_ERROR_MSG);
-//        theLoginPage.closePage();
-//    }
-//    @Then("User should see sign in button with background color old {string}")
-//    public void verifyButtonColor(String buttonColor){
-//        theLoginPage.verifyButtonColor(buttonColor);
-//        theLoginPage.takeScreenShot(theLoginPage.LOGIN_FAIL_ERROR_MSG);
-//        theLoginPage.closePage();
-//    }
+    private static final Logger LOG = Logger.getLogger(StepDefinitions.class);
+
+    TestDataProvider testDataProvider=new TestDataProvider();
+    ApplicationProperties appProps = new ApplicationProperties();
+    LoginPage theLoginPage;
+    WelcomePage theWelcomePage;
+    UserFormPage theUserFormPage;
+    EmployeeDetailsPage theEmployeeDetails;
+    RegionDetailsPage theRegionDetailsPage;
+    EmployeeSearchPage theEmployeeSearchPage;
+    CountriesInRegionPage theCountriesPage;
+    BasePage theCurrentPage;
+    LogoutPage theLogoutPage;
+    String theFirstName;
+    String theFormError;
+    String theFirstNameError;
+    String theLastNameError;
+    String theSuccessmsg;
+    User validUser;
+
+    @Given("User is on Login Page old")
+    public void getLoginPage()
+    {
+        theLoginPage = new LoginPage();
+    }
+    @When("User enters {string} as username old")
+    public void enterUsername(String aUserName){
+        theLoginPage.enterUsername(aUserName);
+    }
+    @And("User enters {string} as password old")
+    public void enterPwd(String aPassword){
+        theLoginPage.enterPwd(aPassword);
+    }
+    @And("User checks remember me check box old")
+    public void checkRememberMe(){
+          theLoginPage.checkRememberMe();
+          theLoginPage.takeScreenShot("rememberPage");
+    }
+    @And("User clicks Sign In old")
+    public void clickSignIn(){
+        theLoginPage.clickSignIn();
+    }
+
+    @Then("User should see Welcome page old")
+    public void checkAndCloseWelcome(){
+        theWelcomePage = new WelcomePage(theLoginPage);
+        //Assert.assertEquals(theWelcomePage.getWelcomeMsg(), theWelcomePage.WELCOME_MESSAGE);//doubt
+        Assert.assertEquals(theWelcomePage.getWelcomeMsg(),appProps.getWelcomeMsg());
+        theWelcomePage.takeScreenShot(theWelcomePage.WELCOME_PAGE);
+//        theWelcomePage.closePage();
+    }
+    @And("User closes the browser old")
+    public void closeBrowserOld(){
+        theCurrentPage.closeBrowser();
+    }
+
+    @Then("User should see error message old")
+    public void checkErrorMessage(){
+        Assert.assertEquals(theLoginPage.getErrorMsg(),theLoginPage.LOGIN_FAIL_ERROR_MSG);
+        theLoginPage.closePage();
+    }
+    @Then("User should see sign in button with background color old {string}")
+    public void verifyButtonColor(String buttonColor){
+        theLoginPage.verifyButtonColor(buttonColor);
+        theLoginPage.takeScreenShot(theLoginPage.LOGIN_FAIL_ERROR_MSG);
+        theLoginPage.closePage();
+    }
 ////    //User form
 //    @Given("User logged in as {string}")
 //    public void loginUser(String userName) throws UserNotFound {

@@ -5,6 +5,9 @@ package com.pages;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.testng.Assert;
@@ -59,6 +62,23 @@ public class BasePage {
     protected By idBy= By.id("footer");
 
     protected BasePage theCurrentPage=this;
+
+    public BasePage(){
+
+        System.setProperty(CHROME_DRIVER_PROPERTY, CHROME_DRIVER_LOCATION);
+        System.setProperty("webdriver.chrome.whitelistedIps", "23.120.24.187");
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--explicitly-allowed-ports=10080");
+        DesiredCapabilities capabilities = new DesiredCapabilities();
+        capabilities.setCapability(ChromeOptions.CAPABILITY, options);
+        options.merge(capabilities);
+        theWebDriver = new ChromeDriver(options);
+        //        theWebDriver = new FirefoxDriver();
+        //        theWebDriver = new ChromeDriver();
+        theWebDriver.get(LOGIN_URL);
+        wait = new FluentWait<>(theWebDriver);
+        wait.until(ExpectedConditions.presenceOfElementLocated(buttonBy));
+    }
 
     public void closePage(){
         theWebDriver.close();
@@ -151,5 +171,9 @@ public class BasePage {
     }
     public BasePage getCurrentPage(){
         return theCurrentPage;
+    }
+
+    public WebDriver getWebDriver(){
+        return theWebDriver;
     }
 }

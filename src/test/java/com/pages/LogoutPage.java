@@ -15,4 +15,5 @@ public class LogoutPage extends BasePage{
         wait.until(ExpectedConditions.presenceOfElementLocated(buttonBy));
         theWebDriver.close();
     }
+
 }

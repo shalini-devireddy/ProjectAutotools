@@ -1,7 +1,6 @@
 Feature: Test User Form Feature
   This will test First Name of the user displays in the first name field of the user form
 
-  @testScenario
   Scenario: Validate First Name field data value
     Given User logged in as "shalini@kubecloudsinc.com"
     And user navigates to user form page from welcome page
